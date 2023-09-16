@@ -16,7 +16,7 @@ const Home: NextPage = () => {
   return (
     <Box flex="1 0  auto">
       <Heading textAlign="center" p="3rem 1rem">
-          Favorite Books
+          Favorite Pokemon
       </Heading>
       <Box>
         <Box
@@ -29,13 +29,17 @@ const Home: NextPage = () => {
         >
           {favorites.length > 0 ? (
             <>
-              {favorites.map((book) => (
-                <Card key={book.id} book={book} view="grid" />
-              ))}
+                <div className="grid grid-cols-5 grid-rows-8 gap-4">
+                    {favorites.map((book) => (
+                        <Card key={book.id} pokemon={book} view="grid" />
+                    ))}
+                </div>
+
+
             </>
           ) : (
             <Text fontSize="1.2rem" mt="2rem" fontWeight="500">
-                You don't have favorite books ;(
+                You don't have favorite Pokemon ;(
             </Text>
           )}
         </Box>

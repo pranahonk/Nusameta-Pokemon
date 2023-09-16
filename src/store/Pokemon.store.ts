@@ -1,8 +1,5 @@
-import {createAsyncThunk, createSlice, current, PayloadAction} from '@reduxjs/toolkit';
-import {BookApi, pokemonApi} from '../services/BookApi';
-import {Book} from '../types/book';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from './store';
-import {util} from "../services/util";
 
 interface getPokemonListProps {
     count: number;

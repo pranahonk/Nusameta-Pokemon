@@ -1,13 +1,7 @@
-# Search Books - Next.js Application
+# Pokemon - Next.js Application
 
 This is a Next.js application for searching and displaying books. It uses various technologies and libraries including Chakra UI, Redux Toolkit, React Query, and more. The application allows users to search for books, view details about them, and paginate through the results.
 
-## Features
-
-- Search for books by title.
-- Filter books by title.
-- Filter books by year of release.
-- Switch between grid and list view.
 
 ## Getting Started
 
@@ -16,11 +10,11 @@ To get started with this project, follow these steps:
 1. Clone the repository:
 
    ```shell 
-   git clone https://github.com/pranahonk/SynergizeTech-fe-test
+   git clone https://github.com/pranahonk/Nusameta-Pokemon
 
 2. Navigate to the project directory:
     ```shell
-    cd SynergizeTech-fe-test
+    cd Nusameta-Pokemon
     ```
 3. Install the project dependencies using Yarn or npm:
     ```shell
@@ -44,14 +38,9 @@ Once the development server is running, open your web browser and navigate to `h
 This project uses the Google Books API for retrieving book information. The API endpoint is:
 
 ```shell
-   https://www.googleapis.com/books/v1/volumes
+   https://pokeapi.co/api/v2/pokemon/
 ```
-you will need to set up environment variables in a .env file. Here's an example .env file:
 
-```shell
-NODE_ENV="development"
-BOOK_KEY="YOUR-GOOGLE-BOOK-API-KEY"
-```
 
 ## Deployment
 

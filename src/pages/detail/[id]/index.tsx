@@ -1,48 +1,29 @@
-import {
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalBody,
-    ModalCloseButton,
-    useDisclosure,
-    Box,
-    Button,
-    Heading,
-    Text,
-} from "@chakra-ui/react";
-import { InfoIcon } from "@chakra-ui/icons";
-import Image from "next/image";
+import {Box, Button, Card, CardBody, Divider, Heading, Image, Text} from "@chakra-ui/react";
 import {useAppDispatch} from "../../../store/store";
-import {Book} from "../../../types/book";
+import {PokemonData} from "../../../types/book";
+import {pokemonApiDetail} from "../../../services/BookApi";
+import {useRouter} from "next/router";
 import {addFavorite} from "../../../store/Favorites.store";
 
-interface ModalBookProps {
-    book: Book;
-}
-
-const ModalBook = ({ book }: ModalBookProps) => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+const PageDetail = () => {
     const dispatch = useAppDispatch();
+    const router = useRouter();
+    const id = router?.query?.id;
+
+
+    const { data: pokemonDetail, refetch, isLoading, isFetching, error, status }  = pokemonApiDetail({id});
 
     return (
         <>
-            <Button
-                rightIcon={<InfoIcon fontSize="1.15rem" />}
-                onClick={() => onOpen()}
-            >
-                See Details
-            </Button>
-            <Modal isOpen={isOpen} onClose={onClose} size="2xl">
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalCloseButton />
-                    <ModalBody p="3rem 1rem">
+            <div className="grid place-items-center h-screen">
+                <Card maxW='md'>
+                    <CardBody>
                         <Box display="flex" justifyContent="center">
                             <Image
                                 height="420"
                                 width="280"
-                                src={book?.img}
-                                alt={book?.title}
+                                src={pokemonDetail?.data?.sprites?.front_default}
+                                alt={pokemonDetail?.data?.sprites?.front_default}
                             />
                         </Box>
 
@@ -59,20 +40,24 @@ const ModalBook = ({ book }: ModalBookProps) => {
                                 },
                             }}
                         >
-                            <Heading textAlign="center">{book.title}</Heading>
+                            <Heading textAlign="center">{pokemonDetail?.data?.name}</Heading>
 
                             <Box>
-                                <Text as="h3">Autores:</Text>
-                                <Text as="p">{book.authors}</Text>
+                                <Text as="h3">Name:</Text>
+                                <Text as="p">{pokemonDetail?.data?.name}</Text>
                             </Box>
 
                             <Box>
-                                <Text as="h3">Editora:</Text>
-                                <Text as="p">{book.publisher}</Text>
+                                <Text as="h3">Weight:</Text>
+                                <Text as="p">{pokemonDetail?.data?.weight}</Text>
                             </Box>
                             <Box>
-                                <Text as="h3">Total de páginas: </Text>
-                                <Text as="p"> {book.pageCount}</Text>
+                                <Text as="h3">Height:</Text>
+                                <Text as="p">{pokemonDetail?.data?.height}</Text>
+                            </Box>
+                            <Box>
+                                <Text as="h3">base experience: </Text>
+                                <Text as="p">{pokemonDetail?.data?.base_experience}</Text>
                             </Box>
 
                             <Box
@@ -83,10 +68,6 @@ const ModalBook = ({ book }: ModalBookProps) => {
                                     overflow: "hidden",
                                 }}
                             >
-                                <Text as="h3">Sinopse:</Text>
-                                <Text as="p" textOverflow="ellipsis">
-                                    {book.description}
-                                </Text>
                             </Box>
                         </Box>
                         <Button
@@ -98,7 +79,7 @@ const ModalBook = ({ book }: ModalBookProps) => {
                                 background: "none",
                             }}
                             borderRadius="40%"
-                            onClick={() => dispatch(addFavorite(book))}
+                            onClick={() => dispatch(addFavorite(pokemonDetail.data as PokemonData))}
                         >
                             <Image
                                 width="25"
@@ -107,11 +88,12 @@ const ModalBook = ({ book }: ModalBookProps) => {
                                 alt="favorito"
                             />
                         </Button>
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
+                    </CardBody>
+                    <Divider />
+                </Card>
+            </div>
         </>
     );
 };
 
-export default ModalBook;
+export default PageDetail;

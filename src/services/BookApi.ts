@@ -57,3 +57,22 @@ export function pokemonApi ({offset, limit}){
   }
 
 }
+
+export function pokemonApiDetail ({id}){
+
+  const { data, refetch, isLoading , isFetching, error, status } =
+      useQuery(["pokemonDetail"], () =>
+      axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`),{
+      enabled: !!id
+      }
+  );
+
+  return{
+    data,
+    refetch,
+    isLoading,
+    isFetching,
+    error,
+    status
+  }
+}

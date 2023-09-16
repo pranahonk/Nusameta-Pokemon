@@ -1,19 +1,13 @@
-import { configureStore, ThunkAction, Action, combineReducers } from '@reduxjs/toolkit';
-import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux';
+import {combineReducers, configureStore} from '@reduxjs/toolkit';
+import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 
-import BooksReducer from "./Books.store";
 import FavoriteReducer from "./Favorites.store";
-import RecommendationReducer from "./Recommendation.store";
 import PokemonReducer from "./Pokemon.store";
-
-
 
 
 const store = configureStore({
   reducer: {
-    books: BooksReducer,
     favorites: FavoriteReducer,
-    recommendation: RecommendationReducer,
     pokemon: PokemonReducer
   },
 });
@@ -22,8 +16,8 @@ export type RootState = ReturnType<typeof store.getState>;
 
 
 export const RootReducer = combineReducers({
-  books: BooksReducer,
   favorites: FavoriteReducer,
+  pokemon: PokemonReducer
 })
 
 

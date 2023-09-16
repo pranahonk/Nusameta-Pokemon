@@ -11,7 +11,6 @@ const Card = ({ pokemon, view}: CardProps) => {
   const router = useRouter()
 
   const onClickDetail = ():void =>{
-    console.log(pokemon);
     const urlParts = pokemon.url.split('/');
     const pokemonId = urlParts[urlParts.length - 2];
 
