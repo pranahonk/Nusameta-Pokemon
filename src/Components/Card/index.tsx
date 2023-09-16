@@ -10,7 +10,6 @@ interface CardProps {
 
 const Card = ({ book, view}: CardProps) => {
   // console.log(book)
-  // @ts-ignore
   return (
     <Box
       w={view === "grid" ? '550px' : "100%"}

@@ -1,131 +1,68 @@
 import {createAsyncThunk, createSlice, current, PayloadAction} from '@reduxjs/toolkit';
-import {BookApi} from '../services/BookApi';
+import {BookApi, pokemonApi} from '../services/BookApi';
 import {Book} from '../types/book';
 import {RootState} from './store';
 import {util} from "../services/util";
 
+// Define types for offset and limit.
+type Offset = number;
+type Limit = number;
 
-const {getBooks} = BookApi();
+// Define a type for the object returned by the function.
+type PokemonListResult = {
+    data: any; // Replace 'any' with the actual type of 'data'.
+    refetch: () => void;
+    isLoading: boolean;
+    isFetching: boolean;
+    error: any; // Replace 'any' with the actual type of 'error'.
+    status: string;
+};
 
-interface BooksProps {
-    books: Book[];
-    totalPages: number;
-    terms: string;
-    totalItemsPerPage: number;
+interface PokemonProps {
+    pokemon: any;
+    offset: number;
+    limit: number;
+    isLoading: boolean;
+    isFetching: boolean;
+    error: any;
+    status: string;
+
 }
 
-interface getBooksWithTermsProps {
-    terms: string;
-    page: number;
+const initialState:PokemonProps = {
+    pokemon: [],
+    offset: 0,
+    limit: 0,
+    isLoading: false,
+    isFetching: false,
+    error: [],
+    status: null,
 }
 
-const initialState:BooksProps = {
-    books: [],
-    totalItemsPerPage: 12,
-    totalPages: 0,
-    terms: "",
-}
-
-interface payloadDates{
-    type: string;
-    payload: {
-        newStartDate: string;
-        newEndDate: string;
-    }
-}
-
-export const getBooksWithTerms = createAsyncThunk<any, getBooksWithTermsProps>('books/getBooksWithTerms', async ({ terms, page }, thunkAPI) => {
+export const getPokemonList = async ({ offset, limit }: { offset: Offset; limit: Limit }): Promise<PokemonListResult>  => {
     try {
-        const response = await getBooks(terms, page);
+        // Make an API request using pokemonApi with the provided offset and limit.
+        const { data, refetch, isLoading, isFetching, error, status } = await pokemonApi({ offset, limit });
 
-        return response;
+        // Return an object with the fetched data and other relevant properties.
+        return {
+            data,         // The fetched data (replace 'any' with the actual type).
+            refetch,      // A function to manually trigger a refetch.
+            isLoading,    // Indicates whether the request is in progress.
+            isFetching,   // Indicates whether the request is currently fetching data.
+            error,        // Any error that occurred during the request (replace 'any' with the actual type).
+            status        // The HTTP status of the response.
+        };
     } catch (error) {
-        // Handle errors here if needed;
-        throw error;
+        throw error; // You can also replace 'any' with a specific error type.
     }
-});
+}
 
-export const BooksSlice = createSlice({
-    name: 'books',
+export const PokemonSlice = createSlice({
+    name: 'pokemon',
     initialState,
     reducers: {
-        setTerms: (state, action: PayloadAction<string>) => {
-            state.terms = action.payload;
-        },
 
-        cleanStates: (state) => {
-            state.books = [];
-            state.totalPages = 0;
-        },
-        filterBooks: (state, action : PayloadAction<string>): void => {
-            // Use 'produce' to access the draft state
-            const draftBooks = [... current(state.books)];
-
-            if (draftBooks?.length > 0) {
-                switch (action.payload) {
-                    case "year":
-                        const sortedBooksByYear = draftBooks.sort((a, b) => {
-                            const dateA = new Date(a.publishDate);
-                            const dateB = new Date(b.publishDate);
-                            return dateA.getTime() - dateB.getTime();
-                        });
-                        state.books = sortedBooksByYear;
-                        break;
-
-                    case "title":
-                        const sortedBooksByTitle =draftBooks.sort((a, b) => {
-                            const titleA = a.title.toLowerCase();
-                            const titleB = b.title.toLowerCase();
-
-                            if (titleA < titleB) {
-                                return -1;
-                            }
-                            if (titleA > titleB) {
-                                return 1;
-                            }
-                            return 0;
-                        });
-
-                        state.books = sortedBooksByTitle;
-                        break;
-                    default:
-                        return;
-                }
-            }
-        },
-        filterYear : (state, action : payloadDates): void => {
-            const startDate = new Date(action.payload?.newStartDate);
-            const endDate = new Date(action.payload?.newEndDate);
-
-            const newStartYear = startDate.getFullYear();
-            const newEndYear = endDate.getFullYear();
-
-            if(newStartYear &&(newEndYear > newStartYear)){
-                const draftBooks = [... current(state.books)];
-
-                const filteredYearBooks = draftBooks.filter((book) => {
-                    if (book.publishDate) {
-                        const bookYear = new Date(book.publishDate).getFullYear();
-                        return bookYear >= newStartYear && bookYear <= newEndYear;
-                    }
-                    return false; // Skip books without a publishDate
-                });
-
-                state.books = filteredYearBooks;
-            }
-        },
-        setBookFromData : (state, action): void => {
-
-            if (action.payload?.totalItems && action.payload?.items) {
-                if (action.payload.totalItems === 0) {
-                    state.books = [];
-                    return;
-                }
-                state.books = util.formatBooks(action.payload.items, state.totalItemsPerPage);
-                state.totalPages = Math.ceil(action.payload.totalItems / state.totalItemsPerPage);
-            }
-
-        },
     },
     extraReducers: (builder: any) => {
         builder
@@ -144,4 +81,4 @@ export const BooksSlice = createSlice({
 export const {setTerms,cleanStates, filterBooks, setBookFromData, filterYear } = BooksSlice.actions;
 export const SelectBooks = (state: RootState) => state.books;
 
-export default BooksSlice.reducer;
+export default PokemonSlice.reducer;
