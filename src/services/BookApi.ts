@@ -43,10 +43,8 @@ export function BookApi() {
 
 export function pokemonApi ({offset, limit}){
 
-  const { data, refetch, isLoading , isFetching, error, status } = useQuery(["todos"], () =>
-      axios.get(`https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=${limit}`), {
-      enabled: !!offset,
-      }
+  const { data, refetch, isLoading , isFetching, error, status } = useQuery(["pokemon"], () =>
+      axios.get(`https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=${limit}`)
   );
 
   return{

@@ -4,6 +4,7 @@ import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux';
 import BooksReducer from "./Books.store";
 import FavoriteReducer from "./Favorites.store";
 import RecommendationReducer from "./Recommendation.store";
+import PokemonReducer from "./Pokemon.store";
 
 
 
@@ -12,7 +13,8 @@ const store = configureStore({
   reducer: {
     books: BooksReducer,
     favorites: FavoriteReducer,
-    recommendation: RecommendationReducer
+    recommendation: RecommendationReducer,
+    pokemon: PokemonReducer
   },
 });
 

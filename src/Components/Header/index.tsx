@@ -13,8 +13,8 @@ const Header = () => {
       alignItems="center"
       gridTemplateColumns="1fr 1fr"
     >
-      <Box display="flex" alignItems="center" fontSize="1.2rem" gap="0.5rem">
-        <Text fontWeight="bold">SynergizeTech Books</Text>
+      <Box display="flex" justifyContent="center" alignItems="center" fontSize="1.2rem" gap="0.5rem">
+        <Text fontWeight="bold">Nusameta Pokemon</Text>
       </Box>
 
       <Box justifySelf="flex-end" display="flex" gap="1.2rem">
