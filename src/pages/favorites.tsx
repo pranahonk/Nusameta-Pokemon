@@ -30,8 +30,8 @@ const Home: NextPage = () => {
           {favorites.length > 0 ? (
             <>
                 <div className="grid grid-cols-5 grid-rows-8 gap-4">
-                    {favorites.map((book) => (
-                        <Card key={book.id} pokemon={book} view="grid" />
+                    {favorites.map((book, y) => (
+                        <Card key={y} pokemon={book} view="grid" />
                     ))}
                 </div>
 
